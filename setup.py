@@ -9,7 +9,7 @@ setup(
     author_email='d _ jan AT ymail.com',
     description='Generates a figurecaption each Image which stands alone in a paragraph',
     url='https://github.com/grandgeorg/figureAltCaption',
-    py_modules=['mdx_figure_alt_caption'],
+    py_modules=['figureAltCaption'],
     install_requires=['Markdown>=2.0',],
     classifiers=[
         'Development Status :: 1',

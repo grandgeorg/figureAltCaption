@@ -22,10 +22,23 @@ Example – this source:
 would generate this:
 
     <p> Bla bla bla</p>
-    
+
     <figure>
         <img src="http://lorempixel.com/400/200/">
         <figcaption>this is the caption</figcaption>
     </figure>
-   
+
     <p>Next paragraph starts here</p>
+
+### Installation
+
+```
+pip install git+git://github.com/exaroth/mdx_custom_span_class.git
+```
+
+
+### Usage width mkDocs
+```
+markdown_extensions:
+  - figureAltCaption
+```
