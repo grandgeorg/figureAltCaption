@@ -42,3 +42,12 @@ pip install git+git://github.com/grandgeorg/figureAltCaption.git
 markdown_extensions:
   - figureAltCaption
 ```
+
+### Limitations
+
+Reference-style will *NOT* work until now:
+```
+![alt text][logo]
+
+[logo]: http://example.com/img/img.png "Logo Title Text 2"
+```
