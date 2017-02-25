@@ -33,7 +33,7 @@ would generate this:
 ### Installation
 
 ```
-pip install git+git://github.com/exaroth/mdx_custom_span_class.git
+pip install git+git://github.com/grandgeorg/figureAltCaption.git
 ```
 
 
