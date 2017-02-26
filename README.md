@@ -1,6 +1,8 @@
 # figureAltCaption
 
-Generates a figurecaption each Image which stands alone in a paragraph,
+Extension for Python Markdown to add captions to images.
+
+Generates a figurecaption for each image which stands alone in a paragraph,
 similar to [pandoc’s handling of images/figures](http://pandoc.org/README.html#extension-implicit_figures)
 
 ## Installation
@@ -80,7 +82,9 @@ Licensed under the GPL 2 (see LICENSE.md)
 
 Copyright 2015 - Jan Dittrich by
 building upon the [markdown-figures](https://github.com/helderco/markdown-figures) Plugin by
+
 Copyright 2013 - [Helder Correia](http://heldercorreia.com) (GPL2)
+
 Bugfix and improvements by Viktor Grandgeorg
 Copyright 2017 - [Viktor Grandgeorg](http://grandgeorg.com) (GPL2)
 
