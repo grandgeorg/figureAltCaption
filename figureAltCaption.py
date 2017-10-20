@@ -54,6 +54,7 @@ FIGURES = [
 # This is the core part of the extension
 class FigureCaptionProcessor(BlockProcessor):
     FIGURES_RE = re.compile('|'.join(f for f in FIGURES))
+    COUNTER = 0
 
     def test(self, parent, block):
         isImage = bool(self.FIGURES_RE.search(block))
@@ -65,6 +66,7 @@ class FigureCaptionProcessor(BlockProcessor):
             return False
 
     def run(self, parent, blocks):
+        self.COUNTER += 1
         raw_block = blocks.pop(0)
         # Let's get rid of the first exclamation mark
         clean_rb = raw_block[1:]
@@ -77,7 +79,7 @@ class FigureCaptionProcessor(BlockProcessor):
             # pprint.pprint(captionText)
 
         # create figure
-        figure = etree.SubElement(parent, 'figure')
+        figure = etree.SubElement(parent, 'figure', {'id' : 'figure-' + str(self.COUNTER) })
 
         # render image in figure
         figure.text = clean_rb
