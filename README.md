@@ -75,6 +75,7 @@ Improvements over original from https://github.com/jdittrich/figureAltCaption:
     ![This is the caption](someimageurl.png)
     ```
     This way one can decide to use this extension on a per image base.
+-   Numbered id attribute ```id="figure-n"``` is added to figures.
 
 ---
 
