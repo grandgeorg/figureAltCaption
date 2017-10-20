@@ -23,7 +23,7 @@ will generate:
 
     <p>Some paragraph body text</p>
 
-    <figure>
+    <figure id="figure-1">
         <img alt="This is the caption" src="http://lorempixel.com/400/200/">
         <figcaption>This is the caption</figcaption>
     </figure>
@@ -44,7 +44,7 @@ will generate:
 
     <p>Some paragraph body text</p>
 
-    <figure>
+    <figure id="figure-1">
         <img alt="This is the caption" src="img/image.png"
             title="This is the title text">
         <figcaption>This is the caption</figcaption>
