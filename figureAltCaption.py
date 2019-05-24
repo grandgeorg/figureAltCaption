@@ -33,7 +33,7 @@ would generate a figure like this:
 
 from __future__ import unicode_literals
 from markdown import Extension
-from markdown.inlinepatterns import IMAGE_LINK_RE, IMAGE_REFERENCE_RE, NOBRACKET, BRK
+from markdown.inlinepatterns import IMAGE_LINK_RE, IMAGE_REFERENCE_RE
 from markdown.blockprocessors import BlockProcessor
 from markdown.util import etree
 # re Support for Regular Expressions
@@ -45,53 +45,54 @@ import re
 import logging
 logger = logging.getLogger('MARKDOWN')
 
-FIGURES = [
-    u'^\s*\!' + IMAGE_LINK_RE + u'\s*$',
-    u'^\s*\!' + IMAGE_REFERENCE_RE + u'\s*$'
-]
-
+FIGURES = [u'^\s*\!'+IMAGE_LINK_RE, u'^\s*\!'+IMAGE_REFERENCE_RE] #is: linestart, any whitespace (even none), image, any whitespace (even none), line ends.
+CAPTION = r'\[(?P<caption>[^\]]*)\]' # Get the contents within the first set of brackets
+ATTR = r'\{(?P<attributes>[^\}]*)\}'
 
 # This is the core part of the extension
 class FigureCaptionProcessor(BlockProcessor):
-    FIGURES_RE = re.compile('|'.join(f for f in FIGURES))
+    FIGURES_RE = re.compile('|'.join(f for f in FIGURES)) # Identifies the figures
+    CAPTION_RE = re.compile(CAPTION) # Identifies the figure caption
+    ATTR_RE = re.compile(ATTR) # Identifies the figure caption
     COUNTER = 0
 
-    def test(self, parent, block):
+    def test(self, parent, block): # is the block relevant
+
         isImage = bool(self.FIGURES_RE.search(block))
-        isOnlyOneLine = (len(block.splitlines()) == 1)
+        isOnlyOneLine = (len(block.splitlines())== 1)
         isInFigure = (parent.tag == 'figure')
+
+        # print(block, isImage, isOnlyOneLine, isInFigure, "T,T,F")
         if (isImage and isOnlyOneLine and not isInFigure):
             return True
         else:
             return False
 
-    def run(self, parent, blocks):
+    def run(self, parent, blocks): # how to process the block?
         self.COUNTER += 1
         raw_block = blocks.pop(0)
+
         # Let's get rid of the first exclamation mark
-        clean_rb = raw_block[1:]
-        # pprint.pprint(clean_rb)
-        captionText = self.FIGURES_RE.search(raw_block).group(1)
-        # If captionText is empty it's a reference
-        # and we have to search in that regex:
-        if not captionText:
-            captionText = re.search(IMAGE_REFERENCE_RE, clean_rb).group(1)
-            # pprint.pprint(captionText)
+        raw_block = raw_block[1:]
+
+        captionText = self.CAPTION_RE.search(raw_block).group('caption')
+        try:
+            attrText = self.ATTR_RE.search(raw_block).group('attributes') # Get the caption text
+        except:
+            attrText = None
 
         # create figure
         figure = etree.SubElement(parent, 'figure', {'id' : 'figure-' + str(self.COUNTER) })
 
+        if attrText:
+            figure.set('id',attrText)
+
         # render image in figure
-        figure.text = clean_rb
+        figure.text = raw_block
 
         # create caption
-        figcaptionElem = etree.SubElement(figure, 'figcaption')
-        # Commant by Jan Dittrich:
-        # no clue why the text itself turns out as html again and not raw.
-        # Anyhow, it suits me, the blockparsers annoyingly wrapped everything
-        # into <p>.
+        figcaptionElem = etree.SubElement(figure,'figcaption')
         figcaptionElem.text = captionText
-
 
 class FigureCaptionExtension(Extension):
     def extendMarkdown(self, md, md_globals):
@@ -100,6 +101,5 @@ class FigureCaptionExtension(Extension):
                                       FigureCaptionProcessor(md.parser),
                                       '<ulist')
 
-
-def makeExtension(configs={}):
-    return FigureCaptionExtension(configs=configs)
+def makeExtension(**kwargs):
+    return FigureCaptionExtension(**kwargs)
